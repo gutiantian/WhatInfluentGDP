@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html class="ocks-org do-not-copy">
+<meta charset="utf-8">
+<title>infovis</title>
+<link rel="stylesheet" href="d3.slider.css" />
+<style>
+  @import url(../style.css?aea6f0a);
+  .bar {
+    fill: steelblue;
+  }
+  
+  .bar:hover {
+    fill: brown;
+  }
+  
+  #chart {
+    margin-left: 15px;
+    height: 500px;
+  }
+  
+  .forestGraph {
+    margin-left: 500px;
+    margin-top: 1000px;
+  }
+  
+  #lineplot {
+    margin-left: : 15px;
+    height: : 500px;
+  }
+  
+  text {
+    font: 10px Calibri;
+    fill: #fff;
+  }
+  
+  .bars {
+    stroke: none;
+  }
+  
+  .dots {
+    stroke: none;
+  }
+  
+  .axis path,
+  .axis line, .downXAxis path, .downXAxis line, .downYAxis path, .downYAxis line {
+    fill: none;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
+  
+  .label {
+    fill: #fff;
+  }
+  
+  .year.label {
+    font: 500 196px "Calibri";
+    fill: #ddd;
+    opacity: 0.13;
+  }
+  
+  .year.label.active {
+    fill: #aaa;
+  }
+  
+  .overlay {
+    fill: none;
+    /*  pointer-events: all;
+*/
+    /*  cursor: ew-resize;
+*/
+  }
+  
+  .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+  
+  #slider1 {
+    width: 790px;
+    margin-left: 70px;
+    margin-top: 0px;
+    margin-bottom: 35px;
+  }
+  
+  .legend rect {
+    fill: white;
+    stroke: black;
+    opacity: 0.8;
+  }
+  
+  #datButton {
+    margin-left: 65px;
+    display: inline
+  }
+  /*
+li{
+  display: inline;
+}
+*/
+  
+  .one {
+    table-layout: fixed;
+  }
+  
+  .one label {
+    color: white;
+    font: 12px Calibri;
+    float: none;
+    /* so every checkbox is next to the previus one */
+  }
+  
+  .one.abc {
+    width: 100px;
+    display: table-cell;
+  }
+  
+  .one.abc label:nth-child(5n+8) {
+    float: none;
+    clear: both;
+    color: red
+  }
+</style>
+
+<body style="background-color:#333;">
+
+
+  <p id="chart"></p>
+  <div id="slider1" style="position:absolute; left:852px; margin-top: 50px; width:400px;"></div>
+
+
+  <table class="one" style="margin-left:60px; width:800px;">
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="China" /><label>China</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Japan" /><label>Japan</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Philippines" /><label>Philippines</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Iran" /><label>Iran</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Singapore" /><label>Singapore</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Thailand" /><label>Thailand</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Korea" /><label>South Korea</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="India" /><label>India</label></td>
+    </tr>
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Algeria" /><label>Algeria</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Sierra Leone" /><label>Sierra Leone</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Congo" /><label>Congo Rep</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Nigeria" /><label>Nigeria</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="South Africa" /><label>South Africa</label></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+    </tr>
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Mexico" /><label>Mexico</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Bahamas" /><label>Bahamas</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Chile" /><label>Chile</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Colombia" /><label>Colombia</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Brazil" /><label>Brazil</label></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+    </tr>
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="United Kingdom" /><label>UK</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="France" /><label>France</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Turkey" /><label>Turkey</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Finland" /><label>Finland</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Iceland" /><label>Iceland</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Spain" /><label>Spain</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Italy" /><label>Italy</label></td>
+      <td class="abc"></td>
+    </tr>
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="United States" /><label>United States</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Canada" /><label>Canada</label></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+    </tr>
+    <tr>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Australia" /><label>Australia</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="New Zealand" /><label>New Zealand</label></td>
+      <td class="abc"><input type="checkbox" name="mybox" id="chckBox" class="child" value="Fiji" /><label>Fiji</label></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+      <td class="abc"></td>
+    </tr>
+  </table>
+
+  <div id="datButton">
+  </div>
+
+  <div class="forestGraph">
+    <h1>hahahahaah</h1>
+
+  </div>
+
+
+  <!-- <input type="button" id="testB" onclick="getCheckedCountry()" value="OK" style="margin-left:60px" /> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="d3.slider.js"></script>
+  <script src="d3.legend.js"></script>
+
+  <script>
+    var checkedCountries = [];
+    var uncheckedCountries = [];
+    var hitokay = 0;
+
+    function getCheckedCountry() {
+
+      function getCheckedBoxes(chkboxName) {
+        var checkboxes = document.getElementsByName(chkboxName);
+        var checkboxesChecked = [];
+        // loop over them all
+        for (var i = 0; i < checkboxes.length; i++) {
+          // And stick the checked ones onto an array...
+          if (checkboxes[i].checked) {
+            checkboxesChecked.push(checkboxes[i].value);
+          }
+          //  console.log(checkboxes);
+        }
+        // Return the array if it is non-empty, or null
+        return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+      }
+
+      function getUnCheckedBoxes(chkboxName) {
+        var checkboxes = document.getElementsByName(chkboxName);
+        var checkboxesUnChecked = [];
+        // loop over them all
+        for (var i = 0; i < checkboxes.length; i++) {
+          // And stick the checked ones onto an array...
+          if (checkboxes[i].checked) {
+
+          } else {
+            checkboxesUnChecked.push(checkboxes[i].value);
+          }
+        }
+        // Return the array if it is non-empty, or null
+        return checkboxesUnChecked.length > 0 ? checkboxesUnChecked : null;
+      }
+
+      //array of all checked countries
+      checkedCountries = getCheckedBoxes("mybox");
+      console.log(checkedCountries);
+      //array of all unchecked countries
+      uncheckedCountries = getUnCheckedBoxes("mybox");
+
+    }
+
+    //d3.select('#slider1').call(d3.slider());
+    // Various accessors that specify the four dimensions of data to visualize.
+    function x(d) {
+      return d.gdp;
+    }
+
+    function y(d) {
+      return d.co2emission;
+    }
+
+    function radius(d) {
+      return 1;
+    }
+
+    function color(d) {
+      return d.region;
+    }
+
+    function key(d) {
+      return d.name;
+    }
+
+    function bary2(d) {
+      return d.highTech;
+    }
+
+    function bary1(d) {
+      return d.forest;
+    }
+
+    // Chart dimensions.
+    var margin = {
+        top: 10,
+        right: 0,
+        bottom: 40,
+        left: 50
+      },
+      width = 800 - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    // Various scales. These domains make assumptions of data, naturally.
+    var xScale = d3.scale.log().domain([20, 80000]).range([0, 780]),
+      yScale = d3.scale.log().domain([0.00005, 0.02]).range([height, 0]),
+      radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
+      colorScale = d3.scale.category10();
+
+    var cValue = function(d) {
+        return d.region;
+      },
+      colors = d3.scale.category10();
+
+    // The x & y axes.
+    var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(10, d3.format(",d")),
+      yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(8, d3.format(",d"));
+
+    // Create the SVG container and set the origin.
+    var svg = d3.select("#chart").append("svg")
+      .attr("width", width + margin.left + margin.right + 500)
+      .attr("height", height + margin.top + margin.bottom + 300)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var forestChart = d3.select(".forestGraph")
+      .attr("width", width + margin.left + margin.right + 200)
+      .attr("height", height + margin.top + margin.bottom + 200)
+
+    // Add the x-axis.
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+    // Add the y-axis.
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+    // Add an x-axis label.
+    svg.append("text")
+      .attr("class", "x label")
+      .attr("text-anchor", "end")
+      .attr("x", width - 20)
+      .attr("y", height - 6)
+      .text("GDP PER PERSON");
+
+    // Add a y-axis label.
+    svg.append("text")
+      .attr("class", "y label")
+      .attr("text-anchor", "end")
+      .attr("y", 6)
+      .attr("dy", ".75em")
+      .attr("transform", "rotate(-90)")
+      .text("CO2 Emission (kilotons) PER PERSON");
+
+    // Add the year label; the value is set on transition.
+    var label = svg.append("text")
+      .attr("class", "year label")
+      .attr("text-anchor", "end")
+      .attr("y", height - 20)
+      .attr("x", width)
+      .text(1990);
+
+    // Parse the date / time
+    var parseDate = d3.time.format("%d-%b-%y").parse;
+
+    // Set the ranges
+
+    var space = 850;
+    var ylength = 200;
+    var xlength = 400;
+
+    var x1 = d3.scale.ordinal().rangeRoundBands([0, xlength], 0.03);
+    var y1 = d3.scale.linear().domain([0.0001, 0.02]).range([ylength, 0]);
+
+    var x2 = d3.scale.ordinal().rangeRoundBands([0, xlength], 0.03);
+    var y2 = d3.scale.linear().range([ylength, 0]);
+
+    // Load the data.
+    d3.json("data.json", function(nations) {
+
+      // var dots = svg.app
+      // A bisector since many nation's data is sparsely-defined.
+      var bisect = d3.bisector(function(d) {
+        return d[0];
+      });
+
+      // add the tooltip area to the webpage
+      var tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+      x2.domain(nations.map(function(d) {
+        return d["name"];
+      }));
+
+      x1.domain(nations.map(function(d) {
+        return d["name"];
+      }));
+
+      y2.domain([0, 100]);
+      y1.domain([0, 100]);
+
+      var xAxis1 = d3.svg.axis().scale(x1)
+        .orient("bottom");
+
+      var xAxis2 = d3.svg.axis().scale(x2)
+        .orient("bottom");
+
+      var yAxis1 = d3.svg.axis().scale(y1)
+        .orient("left");
+
+      var yAxis2 = d3.svg.axis().scale(y2)
+        .orient("left");
+
+      //Add the x2-axis
+      svg.append("g")
+        .attr("class", "downXAxis")
+        .attr("transform", "translate(850," + 2.25 * ylength + ")")
+        .call(xAxis2)
+        .selectAll("text")
+        .attr("y", 10)
+        .attr("x", 5)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
+
+        ;
+      // Add the y2-axis.
+      svg.append("g")
+        .attr("class", "downYAxis")
+        .attr("transform", "translate(850," + 1.25 * ylength + ")")
+        .call(yAxis2);
+
+      //Add the x1 Axis
+      svg.append("g")
+        .attr("class", "downXAxis")
+        .attr("transform", "translate(850," + ylength + ")")
+        .call(xAxis1)
+        .selectAll("text")
+        .attr("y", 10)
+        .attr("x", 5)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
+
+      // Add the y1-axis.
+      svg.append("g")
+        .attr("class", "downYAxis")
+        .attr("transform", "translate(850," + 0 + ")")
+        .call(yAxis1);
+
+      // Add a y-axis label.
+      svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 6 + 850)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Forest (%)");
+
+      // Add a y-axis label.
+      svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("x", -50 - ylength)
+        .attr("y", 6 + 850)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("High Tech (%)");
+
+      var forestbars = forestChart.selectAll("g")
+        .data(nations)
+        .enter()
+        .append("g")
+        .attr("transform", function(d) {
+
+          return "translate(" + x2(d["name"]) + ",0)";
+
+        });
+
+      var bars = svg.append("g")
+        .attr("class", "bars")
+        .selectAll('.bars')
+        .data(interpolateData(1990))
+        .enter()
+        .append("rect")
+        .attr('class', 'bars')
+        .attr('x', function(d) {
+          return 850 + x2(key(d));
+        })
+        .attr('y', function(d) {
+            return 3.25 * ylength - y2(1-bary2(d));
+          })
+        .attr("height", function(d) {
+          console.log(bary2(d));
+          return y2(1-bary2(d))-ylength;
+        })
+        .attr("width", x2.rangeBand())
+        .style("fill", function(d) {
+          return colors(cValue(d));
+        })
+        .style("opacity", 0.6);
+
+      var fBars = svg.append("g")
+        .attr("class", "bars")
+        .selectAll('.bars')
+        .data(interpolateData(1990))
+        .enter()
+        .append("rect")
+        .attr('class', 'bars')
+        .attr('x', function(d) {
+          return 850 + x2(key(d));
+        })
+        .attr('y', function(d) {
+            return 2 * ylength - y1(1-bary1(d));
+          })
+        .attr("height", function(d) {
+          console.log(bary1(d));
+          return y1(1-bary1(d))-ylength;
+        })
+        .attr("width", x2.rangeBand())
+        .style("fill", function(d) {
+          return colors(cValue(d));
+        })
+        .style("opacity", 0.6);
+
+      // Add a dots per nation. Initialize the data at 1990, and set the colors.
+      var dots = svg.append("g")
+        .attr("class", "dots")
+        .selectAll(".dots")
+        .data(interpolateData(1990))
+        .enter().append("circle")
+        .style("opacity", 0.6)
+        .attr("class", "dots")
+        .call(position)
+        .style("fill", function(d) {
+          return colors(cValue(d));
+        })
+        .on("mouseover", function(d) {
+          // show the tool tip
+          tooltip.style("opacity", 0.8);
+          // fill to the tool tip with the appropriate data
+          tooltip.html(
+              "Name: " + d["name"] + "<br/>" +
+              "Region: " + d["region"] + "<br/>" +
+              "CO2: " + d.co2emission.toFixed(0).replace(/./g, function(c, i, a) {
+                return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
+              }) + " kilotons" + "<br/>" +
+              "GDP: " + d.gdp.toFixed(0).replace(/./g, function(c, i, a) {
+                return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
+              }) + " USD")
+            .style("left", d3.event.pageX + 10 + "px")
+            .style("top", d3.event.pageY + 10 + "px");
+        })
+        .on("mouseout", function(d) {
+          // TODO: hide the tooltip
+          tooltip.style('opacity', 0);
+          // TODO: resize the nodes
+
+        });
+
+      // // Add a title.
+      // dots.append("title")
+      //     .text(function(d) { return d.name; });
+
+      // Add an overlay for the year label.
+      var box = label.node().getBBox();
+
+      var overlay = svg.append("rect")
+        .attr("class", "overlay")
+        .attr("x", box.x)
+        .attr("y", box.y)
+        .attr("width", box.width)
+        .attr("height", box.height)
+        // .on("mouseover", enableInteraction);
+
+      // Start a transition that interpolates the data based on year.
+
+      svg.transition()
+        .duration(5000)
+        .ease("linear")
+        .tween("year", tweenYear)
+        // .each("end", enableInteraction);/////NOt sure!!!!
+      var newlegend = svg.selectAll(".leg")
+        .data(colors.domain())
+        .enter().append("g")
+        .attr("transform", function(d, i) {
+          return "translate(0," + i * 20 + ")";
+        });
+      console.log(colors.domain());
+      // draw legend colored rectangles
+      newlegend.append("rect")
+        .attr("x", 100)
+        .attr("y", 3)
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", colors);
+
+      newlegend.append("text")
+        .attr("x", 90)
+        .attr("y", 7)
+        .attr("dy", ".35em")
+        .attr("fill", "white")
+        .style("text-anchor", "end")
+        .text(function(d) {
+          return d;
+        });
+
+      // // add GDP line
+      //     svg.append("path")
+      //       .datum(nations)
+      //       .attr("class", "line")
+      //       .attr("d", lineGDP);
+
+      // Positions the dots based on data.
+      function position(dots) {
+        dots.attr("cx", function(d) {
+            return xScale(x(d));
+          })
+          .attr("cy", function(d) {
+            return yScale(y(d));
+          })
+          .attr("r", function(d) {
+            return 10;
+          });
+      }
+      //Positions the bars based on data.
+      function positionbars(bars) {
+         bars.attr('x', function(d) {
+            return 850 + x2(key(d));
+          })
+          .attr('y', function(d) {
+            // return 2.25 * ylength - y2(bary2(d));
+            return 250 + y2(bary2(d));
+          })
+          .attr("height", function(d) {
+           if (hitokay == 0) {
+            return ylength - y2(bary2(d));
+          } else {
+            if(checkedCountries.indexOf(d["name"]) != -1) {
+              return ylength - y2(bary2(d));
+            } else {
+              return 0;
+            }
+          }
+          })
+          .attr("width", x2.rangeBand())
+          .style("fill", function(d) {
+            return colors(cValue(d));
+          });
+      }
+      //Positions the bars based on data.
+      function positionfBars(fBars) {
+        fBars.attr('x', function(d) {
+            return 850 + x1(key(d));
+          })
+          .attr('y', function(d) {
+            return y1(bary1(d));
+          })
+          .attr("height", function(d) {
+           if (hitokay == 0) {
+            return ylength - y1(bary1(d));
+          } else {
+            if(checkedCountries.indexOf(d["name"]) != -1) {
+              return ylength - y1(bary1(d));
+            } else {
+              return 0;
+            }
+          }
+          })
+          .attr("width", x1.rangeBand())
+          .style("fill", function(d) {
+            return colors(cValue(d));
+          });
+      }
+
+      // Defines a sort order so that the smallest dots are drawn on top.
+      function order(a, b) {
+        return radius(b) - radius(a);
+      }
+
+      // Tweens the entire chart by first tweening the year, and then the data.
+      // For the interpolated data, the dots and label are redrawn.
+      function tweenYear() {
+        var year = d3.interpolateNumber(1990, 2015);
+        return function(t) {
+          displayYear(year(t));
+        };
+      }
+
+      // Updates the display to show the specified year.
+      function displayYear(year) {
+        dots.data(interpolateData(year)).call(position).sort(order);
+        bars.data(interpolateData(year)).call(positionbars);
+        fBars.data(interpolateData(year)).call(positionfBars);
+
+        label.text(Math.round(year));
+      }
+
+      function interpolateData(year) {
+        return nations.map(function(d) {
+          var population = parseInt(interpolateValues(d.Population, year));
+          // window.alert(interpolateValues(d["highTech"], year));
+          return {
+            name: d.name,
+            region: d.region,
+            gdp: interpolateValues(d.gdp, year) / population,
+            co2emission: interpolateValues(d["co2"], year) / population,
+            highTech: interpolateValues(d["highTech"], year),
+            forest: interpolateValues(d["forest"], year)
+          };
+        });
+      }
+
+      function interpolateValues(values, year) {
+        var i = bisect.left(values, year, 0, values.length - 1),
+          a = values[i];
+        if (i > 0) {
+          var b = values[i - 1],
+            t = (year - a[0]) / (b[0] - a[0]);
+          return a[1] * (1 - t) + b[1] * t;
+        }
+        return a[1];
+      }
+
+      // // defines brush
+      // var brush = svg.brush()
+      //   .x(timeScale)
+      //   .extent([startingValue, startingValue])
+      //   .on("brush", brushed);
+
+      d3.select('#slider1').call(d3.slider().axis(d3.svg.axis().orient("top").ticks(15).tickFormat(d3.format("d"))).min(1990).max(2015).step(1)
+        .on("slide", function(evt, value) {
+          svg.transition().duration(0);
+          dots.data(interpolateData(+value), key).call(position).sort(order);
+          bars.data(interpolateData(+value), key).call(positionbars);
+          fBars.data(interpolateData(+value), key).call(positionfBars);
+          label.text(Math.round(+value));
+        }))
+
+      d3.select("#datButton")
+        .append('button')
+        .text('Okay!')
+        .on('click', function(d) {
+          // svg.transition().duration(0);
+          getCheckedCountry();
+          forestbars.remove();
+          hitokay = 1;
+
+          // x2.domain(nations.map(function(d) {
+          //   if (checkedCountries.indexOf(d["name"]) != -1) {
+          //     console.log(d["name"]);
+          //     return d["name"];
+          //   }
+          // }));
+          // y2.domain([0, 100]);
+
+          forestbars = forestChart.selectAll("g")
+            .data(nations)
+            .enter()
+            .append("g")
+            .attr("transform", function(d) {
+              console.log(checkedCountries.indexOf(d["name"]));
+              if (checkedCountries.indexOf(d["name"]) != -1) {
+                return "translate(" + x2(d["name"]) + ",0)";
+              }
+            });
+
+          // window.alert(checkedCountries);
+          //window.alert(checkedCountries.indexOf("Philippines"));
+
+          //remove original country axis
+          svg.selectAll(".downXAxis").remove();
+
+          //change x scale
+          x2.domain(nations.map(function(d) {
+            if (checkedCountries.indexOf(d["name"]) != -1) {
+              return d["name"];
+            }
+          }));
+
+          xAxis2 = d3.svg.axis().scale(x2)
+            .orient("bottom");
+
+          //change x scale
+          x1.domain(nations.map(function(d) {
+            if (checkedCountries.indexOf(d["name"]) != -1) {
+              return d["name"];
+            }
+          }));
+
+          xAxis1 = d3.svg.axis().scale(x1)
+            .orient("bottom");
+
+          //Change the x Axis for upper graph
+          svg.append("g")
+            .attr("class", "downXAxis")
+            .attr("transform", "translate(850," + ylength + ")")
+            .call(xAxis1)
+            .selectAll("text")
+            .attr("y", 10)
+            .attr("x", 5)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
+
+          // Change the x Axis for lower graph
+          svg.append("g")
+            .attr("class", "downXAxis")
+            .attr("transform", "translate(850," + 2.25 * ylength + ")")
+            .call(xAxis2)
+            .selectAll("text")
+            .attr("y", 10)
+            .attr("x", 5)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
+
+          // bars.append('g')
+          //   .selectAll('.bar')
+          //   .data(nations)
+          //   .enter()
+          //   .append('rect')
+          //   .attr('class', 'bar')
+          //   .attr('x', 80)
+          //   .attr('y',function(d) {
+
+          //   })
+
+          if (checkedCountries != null) {
+            svg.selectAll('.dots')
+              .selectAll("circle")
+              .filter(function(d) {
+                return uncheckedCountries.indexOf(d["name"]) != -1;
+              })
+              .transition()
+              .duration(500)
+              .delay(1)
+              .style('opacity', 0)
+            svg.selectAll('.dots')
+              .selectAll("circle")
+              .filter(function(d) {
+                return uncheckedCountries.indexOf(d["name"]) == -1;
+              })
+              .transition()
+              .duration(500)
+              .delay(1)
+              .style('opacity', 0.6)
+          }
+          //ahahahah
+          // if (checkedCountries != null) {
+          //   bars.append('g')
+          //     .selectAll('.bar')
+          //     .filter(function(d) {
+          //     return uncheckedCountries.indexOf(d["name"]) != -1;
+          //   })
+          // }
+          positionbars(bars);
+          positionfBars(fBars);
+          if (checkedCountries == null) {
+            svg.selectAll('.dots')
+              .selectAll("circle")
+              .filter(function(d) {
+                return uncheckedCountries.indexOf(d["name"]) != -1;
+              })
+              .transition()
+              .duration(500)
+              .delay(1)
+              .style('opacity', 0.6)
+          }
+
+          /* .append("rect")
+      .attr('class', 'bar')
+        .attr('x', function(d) {
+         if (checkedCountries.indexOf(d["name"]) != -1) {
+          // window.alert(x2(key(d)));
+          return 900 + x2(d["name"]); 
+        }})
+        .attr('y', 280)
+        .attr("height", function(d) {
+          if (checkedCountries.indexOf(d["name"]) != -1) {
+            return y2(d["highTech"]); }})
+        .attr("width", x2.rangeBand())
+        .style("fill", "red");
+
+*/
+
+        }); // d3.select('#slider1')
+      //   .append(d3.slider().axis(true).min(1990).max(2014))
+
+      // ;
+    });
+  </script>
+  <script src="script.js"></script>
+
+</body>
